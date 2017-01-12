@@ -4,6 +4,10 @@ const stubTransport = require('nodemailer-stub-transport')
 
 const stubMailer = nodemailer.createTransport(stubTransport())
 
+const removeLinebreaks = (message) => {
+    return message.replace(/=\r?\n/g, '').replace(/=3D/g, '=')
+}
+
 const MockParseEmailAdapter = (options) => {
     const sendMail = (mail) => {
         const mailOptions = {
@@ -19,7 +23,7 @@ const MockParseEmailAdapter = (options) => {
                     reject(error)
                 } else {
                     if (!!info && !!info.response) {
-                        console.log(info.response.toString())
+                        console.log(removeLinebreaks(info.response.toString()))
                     }
 
                     resolve(info)
